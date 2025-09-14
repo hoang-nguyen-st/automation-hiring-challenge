@@ -68,7 +68,7 @@ export default function Create({ errors }: Props) {
         const hasValidName = data.name.trim().length > 0;
         const hasValidEmail = data.email.trim().length > 0 && data.email.includes('@');
         const hasAtLeastOneDomain = bringDomains.length > 0 || buyDomains.length > 0;
-        
+
         return hasValidName && hasValidEmail && hasAtLeastOneDomain;
     }, [data.name, data.email, bringDomains.length, buyDomains.length]);
 
@@ -128,19 +128,17 @@ export default function Create({ errors }: Props) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         if (!isFormValid) {
             return;
         }
 
         // Start validation animation
         setIsValidating(true);
-        
+
         // Show validation for 5 seconds, then submit
-        setTimeout(() => {
-            setIsValidating(false);
-            post('/order');
-        }, 5000);
+        setIsValidating(false);
+        post('/order');
     };
 
     return (
@@ -150,7 +148,7 @@ export default function Create({ errors }: Props) {
                 <div className="max-w-4xl mx-auto px-4">
                     <div className="bg-white rounded-lg shadow-md p-8">
                         <h1 className="text-3xl font-bold text-center mb-8">Create Order</h1>
-                        
+
                         <form onSubmit={handleSubmit}>
                             {/* Customer Section */}
                             <div className="mb-8">
@@ -199,7 +197,7 @@ export default function Create({ errors }: Props) {
                                 {errors?.domains && (
                                     <p className="text-red-500 text-sm mb-4">{errors.domains}</p>
                                 )}
-                                
+
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                     {/* Bring Domains */}
                                     <div id="bring-domains-section">
@@ -229,11 +227,10 @@ export default function Create({ errors }: Props) {
                                                     if (bringDomainError) setBringDomainError('');
                                                 }}
                                                 placeholder="Enter domain to bring"
-                                                className={`flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-                                                    bringDomainError 
-                                                        ? 'border-red-500 focus:ring-red-500' 
-                                                        : 'border-gray-300 focus:ring-blue-500'
-                                                }`}
+                                                className={`flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${bringDomainError
+                                                    ? 'border-red-500 focus:ring-red-500'
+                                                    : 'border-gray-300 focus:ring-blue-500'
+                                                    }`}
                                                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addBringDomain())}
                                             />
                                             <button
@@ -269,6 +266,8 @@ export default function Create({ errors }: Props) {
                                         </div>
                                         <div className="flex gap-2">
                                             <input
+                                                id="buy-domain-input"
+                                                name="buy_domain_input"
                                                 type="text"
                                                 value={buyDomainInput}
                                                 onChange={(e) => {
@@ -276,15 +275,15 @@ export default function Create({ errors }: Props) {
                                                     if (buyDomainError) setBuyDomainError('');
                                                 }}
                                                 placeholder={randomizedBuyContent.buyPlaceholder}
-                                                className={`flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${
-                                                    buyDomainError 
-                                                        ? 'border-red-500 focus:ring-red-500' 
-                                                        : 'border-gray-300 focus:ring-blue-500'
-                                                }`}
+                                                className={`flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 ${buyDomainError
+                                                    ? 'border-red-500 focus:ring-red-500'
+                                                    : 'border-gray-300 focus:ring-blue-500'
+                                                    }`}
                                                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addBuyDomain())}
                                             />
                                             <button
                                                 type="button"
+                                                id="buy-domain-add-btn"
                                                 onClick={addBuyDomain}
                                                 className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
                                             >
@@ -307,9 +306,9 @@ export default function Create({ errors }: Props) {
                                     disabled={!isFormValid || isValidating || processing}
                                     className="px-8 py-3 bg-blue-600 text-white text-lg font-medium rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    {processing ? 'Creating Order...' : 
-                                     isValidating ? 'Validating...' : 
-                                     'Order Mailboxes'}
+                                    {processing ? 'Creating Order...' :
+                                        isValidating ? 'Validating...' :
+                                            'Order Mailboxes'}
                                 </button>
                             </div>
                         </form>
