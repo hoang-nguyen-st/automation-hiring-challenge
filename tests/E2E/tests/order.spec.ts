@@ -7,17 +7,20 @@ test.describe('Order Creation Flow', () => {
 
         await orderPage.goto('/');
 
-        await orderPage.fill('#name', 'Lam Hoang 123');
-        await orderPage.fill('#email', 'lamhoang7146123@gmail.com');
+        await orderPage.fill('#name', 'Lam Hoang');
+        await orderPage.fill('#email', 'lamhoang7146@gmail.com');
 
-        await orderPage.fill('#bring-domain-input', 'lamhoang123123.com');
+        await orderPage.fill('#bring-domain-input', 'danang.com');
         await orderPage.click('#bring-domain-add-btn');
 
-        await orderPage.fill('#buy-domain-input', 'lamhoang7146123.com');
+        await orderPage.fill('#buy-domain-input', 'lamhoang!!!.com');
         await orderPage.click('#buy-domain-add-btn');
 
         await orderPage.click('#order-submit-btn');
         const response = await orderPage.waitForResponse('/order');
+        if(response?.props?.errors) {
+            console.error('Order creation failed with errors: ', response.props.errors);
+        }
         console.log('Order created with ID:', response.props?.order_id);
     });
 });
