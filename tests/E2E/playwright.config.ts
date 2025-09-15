@@ -1,30 +1,30 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests',
-  fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
-  
-  use: {
-    baseURL: 'http://localhost:8000',
-    trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
-  },
+    testDir: './tests',
+    fullyParallel: true,
+    forbidOnly: !!process.env.CI,
+    retries: process.env.CI ? 2 : 0,
+    workers: process.env.CI ? 1 : undefined,
+    reporter: 'html',
 
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+    use: {
+        baseURL: 'http://localhost:8000',
+        trace: 'on-first-retry',
+        screenshot: 'on',
     },
-  ],
 
-  webServer: {
-    command: 'php artisan serve',
-    url: 'http://localhost:8000',
-    reuseExistingServer: !process.env.CI,
-    cwd: '../../',
-  },
+    projects: [
+        {
+            name: 'chromium',
+            use: { ...devices['Desktop Chrome'] },
+        },
+    ],
+
+    // webServer: {
+    //     command: 'php artisan serve --host=127.0.0.1 --port=8000',
+    //     url: 'http://localhost:8000',
+    //     reuseExistingServer: !process.env.CI,
+    //     cwd: '../../',
+    // },
 });
