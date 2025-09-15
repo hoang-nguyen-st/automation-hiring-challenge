@@ -12,6 +12,10 @@ export default class PageSpecs implements PageSpecsInterface {
         await this.page.fill(selector, value);
     }
 
+    async locator(selector: string) {
+        return this.page.locator(selector);
+    }
+
     async click(selector: string) {
         const locator = this.page.locator(selector);
         await expect(locator).toBeVisible();
